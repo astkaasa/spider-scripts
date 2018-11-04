@@ -1,0 +1,19 @@
+{
+  "date": "20180903",
+  "site": "zaitakukanri",
+  "data": [
+  	{
+  		"id": "d957306a3fe529fa271ce1d56797bdde84e70343",
+  		"images": {
+  			"image1": "url1",
+  			"image2": "url2"
+  		},
+  		"docs": "doc_url",
+  		"details" : {
+  			"k1": "v1",
+  			"k2": "v2",
+  			"k3": "v3"
+  		}
+  	}
+  ]
+}

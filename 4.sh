@@ -1,0 +1,11 @@
+path=$(date +%F)
+python3.6 es-b2b.py 'hiro-corporation;47DB45Z;AC4VVL4MGL' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
+python3.6 es-b2b.py 'am-bition;46NW3M5;Q747QV2MGK' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
+python3.6 es-b2b.py 'trust-advisers;40WS3H2;G44FL25MGM' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
+python3.6 es-b2b.py 'meiwa-chukai;51H64KW;FD4HCU3MGL' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
+python3.6 es-b2b.py 'tfd;19NV37T;JZ37YA5MGS' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
+python3.6 es-b2b.py 'sfit-pm;41AZ3M6;J5433Q2MGL' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
+python3.6 es-b2b.py 'aml-chintai;538E4PA;BF4HCZ5MGL' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
+python3.6 es-b2b.py 'reloko-tokyo;54AB4MZ;P74KRZ2MGN' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
+python3.6 es-b2b.py 'stageplan;38Z843V;ZG4MZ54MGL' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
+python3.6 es-b2b.py 'itc-uc;528P4MY;7F43554MGL' 1>>"${path}/es-b2b.log" 2>>"${path}/es-b2b.log"
