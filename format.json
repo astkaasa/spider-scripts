@@ -1,19 +1,23 @@
 {
-  "date": "20180903",
+  "id": "123",
+  "src_id": "d957306a3fe529fa271ce1d56797bdde84e70343",
+  "created_at": "20180903",
+  "updated_at": "20181103",
   "site": "zaitakukanri",
-  "data": [
-  	{
-  		"id": "d957306a3fe529fa271ce1d56797bdde84e70343",
-  		"images": {
-  			"image1": "url1",
-  			"image2": "url2"
-  		},
-  		"docs": "doc_url",
-  		"details" : {
-  			"k1": "v1",
-  			"k2": "v2",
-  			"k3": "v3"
-  		}
-  	}
-  ]
+  "line": "line",
+  "station": "station",
+  "duration": "duration",
+  "images": {
+    "image1": "image_url1",
+    "image2": "image_url2"
+  },
+  "docs": {
+    "doc1": "doc_url1",
+    "doc2": "doc_url2"
+  },
+  "details": {
+    "k1": "v1",
+    "k2": "v2",
+    "k3": "v3"
+  }
 }
