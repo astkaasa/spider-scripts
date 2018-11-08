@@ -74,16 +74,10 @@ for index, room_id in enumerate(arr):
     
     os.chdir(name)
     for image_index, image in enumerate(images):
-        try:
-            image_url = re.search(r'(http|https)://[a-zA-Z0-9&;./?=_-]*original[a-zA-Z0-9&;./?=_-]*.jpg', image).group(0)
-            image_name = image.split('img alt="')[1].split('" src')[0]
-            item["images"][f"{image_name}_{image_index}"] = image_url
-            os.system(f"wget -O '{image_name}_{image_index}.jpg' '{image_url}'")
-        except Exception as e:
-            print("Exception Happened At==============================")
-            print(item)
-            print(image)
-            raise e
+        image_url = re.search(r'(http|https)://[a-zA-Z0-9&;./?=_-]*original[a-zA-Z0-9&;./?=_-]*', image).group(0)
+        image_name = image.split('img alt="')[1].split('" src')[0]
+        item["images"][f"{image_name}_{image_index}"] = image_url
+        os.system(f"wget -O '{image_name}_{image_index}.jpg' '{image_url}'")
 
 
     data.append(item)
