@@ -80,7 +80,11 @@ for index, room_id in enumerate(arr):
             item["images"][f"{image_name}_{image_index}"] = image_url
             os.system(f"wget -O '{image_name}_{image_index}.jpg' '{image_url}'")
         except Exception as e:
-            raise print("Exception Happened At==============================\n" + item + "\n" + image)
+            print("Exception Happened At==============================")
+            print(item)
+            print(image)
+            raise e
+
 
     data.append(item)
     os.chdir(path)
