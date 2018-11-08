@@ -68,6 +68,7 @@ for index, room_id in enumerate(arr):
 
     proc = subprocess.Popen(f"curl 'https://{site}.bukkaku.jp/agent/room/images/{room_id}' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: _session_id={auth}' --compressed | grep 'image_files'", stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
+    images = []
     images = out.decode('utf-8').split('\n')
     images.pop()
     
@@ -79,7 +80,7 @@ for index, room_id in enumerate(arr):
             item["images"][f"{image_name}_{image_index}"] = image_url
             os.system(f"wget -O '{image_name}_{image_index}.jpg' '{image_url}'")
         except Exception as e:
-            raise print(e + "==============================\n" + item)
+            raise print("Exception Happened At==============================\n" + item + "\n" + image)
 
     data.append(item)
     os.chdir(path)
