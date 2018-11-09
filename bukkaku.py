@@ -79,9 +79,8 @@ for index, room_id in enumerate(arr):
         item["images"][f"{image_name}_{image_index}"] = image_url
         os.system(f"wget -O '{image_name}_{image_index}.jpg' '{image_url}'")
 
-
     data.append(item)
     os.chdir(path)
 
-with open(f"/home/ubuntu/{today}/bukkaku/data.json", "w") as f:
+with open(f"/home/ubuntu/{today}/bukkaku/{site}_data.json", "w") as f:
     json.dump(data, f, indent=2, sort_keys=False, ensure_ascii=False)
