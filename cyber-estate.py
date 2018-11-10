@@ -99,7 +99,7 @@ for x in arr:
 
     os.chdir(name)
     for image_name, image_url in images.items():
-        os.system(f"wget -qO '{image_name}.jpg' '{image_url}'")
+        os.system(f"wget -o /dev/null -qO '{image_name}.jpg' '{image_url}'")
 
     data.append(item)
     os.chdir(path)

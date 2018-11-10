@@ -57,7 +57,7 @@ for li in soup.findAll('li', {'class':'list-section'}):
     data.append(item)
 
     for image_name, image_url in images.items():
-        os.system(f"wget --no-check-certificate -qO 'zaitakukanri_{src_id}/{image_name}.jpg' 'https://zaitakukanri.co.jp{image_url}'")
+        os.system(f"wget -o /dev/null --no-check-certificate -O 'zaitakukanri_{src_id}/{image_name}.jpg' 'https://zaitakukanri.co.jp{image_url}'")
 
 with open(f"/home/ubuntu/{today}/zaitakukanri/data.json", "w") as f:
     json.dump(data, f, indent=2, sort_keys=False, ensure_ascii=False)

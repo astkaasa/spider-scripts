@@ -83,7 +83,7 @@ for index, room_id in enumerate(arr):
         image_url = re.search(r'(http|https)://[a-zA-Z0-9&;./?=_-]*original[a-zA-Z0-9&;./?=_-]*', image).group(0)
         image_name = image.split('img alt="')[1].split('" src')[0]
         item["images"][f"{image_name}_{image_index}"] = image_url
-        os.system(f"wget -qO '{image_name}_{image_index}.jpg' '{image_url}'")
+        os.system(f"wget -o /dev/null -qO '{image_name}_{image_index}.jpg' '{image_url}'")
 
     data.append(item)
     os.chdir(path)
