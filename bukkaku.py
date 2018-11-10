@@ -6,6 +6,7 @@ import re
 import time
 import math
 import sys
+from bs4 import BeautifulSoup
 
 # kankyo-station;73692n;tw1a
 # dainichi;51447v;vg77
@@ -31,6 +32,11 @@ proc = subprocess.Popen(f"curl -c - 'https://{site}.bukkaku.jp/agent/login/login
 auth = out.decode('utf-8').strip()
 
 os.system(f"curl 'https://{site}.bukkaku.jp/agent/search/list?&c\\[per_page\\]=1000' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'DNT: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3603.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Referer: https://kankyo-station.bukkaku.jp/agent/search/by_area' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: _session_id={auth}' --compressed > {site}_all.log")
+
+with open(f"{site}_all.log") as f:
+    soup = BeautifulSoup(f, 'html5lib')
+
+table = soup.find("table", { "id" : "roomList" })
 
 proc = subprocess.Popen(f"cat {site}_all.log | grep -Eo 'r[0-9]+'", stdout=subprocess.PIPE, shell=True)
 (out, err) = proc.communicate()
@@ -59,7 +65,7 @@ for index, room_id in enumerate(arr):
     item["duration"] = duration_arr[index]
     item["src_id"] = room_id
     item["date"] = today
-    item["site"] = site
+    item["site"] = f"bukkaku_{site}"
     item["images"] = {}
 
     name = f"{site}_{room_id}"
@@ -77,7 +83,7 @@ for index, room_id in enumerate(arr):
         image_url = re.search(r'(http|https)://[a-zA-Z0-9&;./?=_-]*original[a-zA-Z0-9&;./?=_-]*', image).group(0)
         image_name = image.split('img alt="')[1].split('" src')[0]
         item["images"][f"{image_name}_{image_index}"] = image_url
-        os.system(f"wget -O '{image_name}_{image_index}.jpg' '{image_url}'")
+        os.system(f"wget -qO '{image_name}_{image_index}.jpg' '{image_url}'")
 
     data.append(item)
     os.chdir(path)
