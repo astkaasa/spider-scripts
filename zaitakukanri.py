@@ -16,7 +16,7 @@ os.chdir(path)
 
 os.system(f"curl 'https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3605.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=mmv5s2mqcvl9hma6je3vj7hmp5; _4fb564bf9277a72b766d6f3255e0f4b0=b5192df9438f397238a4b11a23e6be38' --compressed > zaitakukanri.html")
 
-with open(f"temp") as f:
+with open(f"zaitakukanri.html") as f:
     soup = BeautifulSoup(f, 'html5lib')
 
 data = []
