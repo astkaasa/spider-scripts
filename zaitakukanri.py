@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 import itertools
 
 today = datetime.date.today().isoformat()
-path = f"/home/ubuntu/{today}/zaitakukanri"
+path = f"/home/ubuntu/{today}"
 os.system(f"mkdir -p {path}")
 os.chdir(path)
 
@@ -57,7 +57,7 @@ for li in soup.findAll('li', {'class':'list-section'}):
     data.append(item)
 
     for image_name, image_url in images.items():
-        os.system(f"wget -o /dev/null --no-check-certificate -O 'zaitakukanri_{src_id}/{image_name}.jpg' 'https://zaitakukanri.co.jp{image_url}'")
+        os.system(f"wget -o /dev/null --no-check-certificate -qO 'zaitakukanri_{src_id}/{image_name}.jpg' 'https://zaitakukanri.co.jp{image_url}'")
 
-with open(f"/home/ubuntu/{today}/zaitakukanri/data.json", "w") as f:
+with open(f"/home/ubuntu/{today}/zaitakukanri.json", "w") as f:
     json.dump(data, f, indent=2, sort_keys=False, ensure_ascii=False)

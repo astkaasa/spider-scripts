@@ -88,5 +88,5 @@ for index, room_id in enumerate(arr):
     data.append(item)
     os.chdir(path)
 
-with open(f"/home/ubuntu/{today}/bukkaku/{site}_data.json", "w") as f:
+with open(f"/home/ubuntu/{today}/{site}.json", "w") as f:
     json.dump(data, f, indent=2, sort_keys=False, ensure_ascii=False)
