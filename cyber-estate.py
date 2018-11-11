@@ -52,9 +52,9 @@ for x in arr:
     item["src_id"] = f"{x[0]}_{x[1]}"
     item["date"] = today
     item["site"] = f"cyber-estate_{site}"
-    os.system(f"curl 'http://mediation.cyber-estate.jp/mediation/main/detail_heya.asp?ggid={site}&gid={site}&bid={x[0]}&hid={x[1]}&sbt=1&pagekb=2&pinst=1' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: med={auth}' --compressed > {site}_{x[0]}_{x[1]}.log")
+    os.system(f"curl 'http://mediation.cyber-estate.jp/mediation/main/detail_heya.asp?ggid={site}&gid={site}&bid={x[0]}&hid={x[1]}&sbt=1&pagekb=2&pinst=1' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: med={auth}' --compressed > cyber-estate_{site}_{x[0]}_{x[1]}.log")
     
-    with open(f"{site}_{x[0]}_{x[1]}.log") as f:
+    with open(f"cyber-estate_{site}_{x[0]}_{x[1]}.log") as f:
         soup = BeautifulSoup(f, 'html5lib')
 
     for br in soup.find_all("br"):

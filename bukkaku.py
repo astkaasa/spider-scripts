@@ -23,7 +23,7 @@ with open('/home/ubuntu/lines.json') as f:
     lines = json.load(f)
 
 today = datetime.date.today().isoformat()
-path = f"/home/ubuntu/{today}/bukkaku"
+path = f"/home/ubuntu/{today}"
 os.system(f"mkdir -p {path}")
 os.chdir(path)
 
@@ -68,7 +68,7 @@ for index, room_id in enumerate(arr):
     item["site"] = f"bukkaku_{site}"
     item["images"] = {}
 
-    name = f"{site}_{room_id}"
+    name = f"bukkaku_{site}_{room_id}"
     os.system(f"mkdir -p '{name}'")
     os.system(f"curl 'https://{site}.bukkaku.jp/agent/room/spec_pdf/{room_id}?belt_type=manager' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: _session_id={auth}' --compressed > '{name}/doc.pdf'")
 
