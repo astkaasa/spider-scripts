@@ -28,9 +28,9 @@ search_str = '|'.join([element.strip().split('\'')[1] for element in out.decode(
 
 os.system(f"curl 'http://mediation.cyber-estate.jp/mediation/main/main_list.asp?lat=0&lng=0&ggid={site}&sbt=1&scdiv=2&towndiv=2&area=&scarea=&stndiv=2&route={search_str}&sc1=0&sc2=00000&sc3=0&sc4=000000000&sc5=00000&sc6=1&sc7=1&sc8=1&sc9=1&sc10=000000000000000000000000000000000000000000000000000000000000&sc11=000000000000000&sc12=000000000000000&sc13=0&sc14=0&sc15=&sc16=&sc17=&sc18=&sc19=0&sc20=0&swlat=0&nelat=0&swlng=0&nelng=0&scgid=0&scbid=0&pref=0&city=0&station=A&tcd=0&SortKBN=9&dp=1' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'DNT: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3603.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: med={auth}' --compressed > cyber-estate_{site}_1.log")
 
-proc = subprocess.Popen(f"cat cyber-estate_{site}_1.log | grep -Eo '<span class=\"red\">[0-9]+</span>'", stdout=subprocess.PIPE, shell=True)
+proc = subprocess.Popen(f"cat cyber-estate_{site}_1.log | grep -Eo '<span class=\"red\">[0-9,]+</span>'", stdout=subprocess.PIPE, shell=True)
 (out, err) = proc.communicate()
-total = int(re.search(r'[0-9]+', out.decode('utf-8')).group(0))
+total = int(re.search(r'[0-9,]+', out.decode('utf-8')).group(0).replace(',', ''))
 
 pages = math.ceil(total / 60)
 for x in range(2, pages + 1):
