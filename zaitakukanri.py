@@ -17,7 +17,7 @@ path = f"/home/ubuntu/{today}"
 os.system(f"mkdir -p {path}")
 os.chdir(path)
 
-os.system(f"curl 'https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3605.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=mmv5s2mqcvl9hma6je3vj7hmp5; _4fb564bf9277a72b766d6f3255e0f4b0=2e60bef1a8e8d847f9c9f8689510cd54' --compressed > zaitakukanri.html")
+os.system(f"curl 'https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3605.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=rtbr8tas9q962vpcl1em2mlsn0; _4fb564bf9277a72b766d6f3255e0f4b0=4e58b7b1e9aeae404a20aa57834d4043' --compressed > zaitakukanri.html")
 
 with open(f"zaitakukanri.html") as f:
     soup = BeautifulSoup(f, 'html5lib')
