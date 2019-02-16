@@ -102,13 +102,14 @@ for x in arr:
 
     name = f"cyber-estate_{site}_{x[0]}_{x[1]}"
     # os.system(f"mkdir -p '{name}'")
-
+    os.system(f"mkdir -p '/home/ubuntu/data/docs/{line_station}/{name}/'")
+    os.system(f"mkdir -p '/home/ubuntu/data/images/{line_station}/{name}/'")
     line_station = f"{item['line']}/{item['station']}"
     os.system(f"curl 'http://mediation.cyber-estate.jp/mediation/report/zumen_zip.asp?ggid={site}&sbt=1&gid={site}&bid={x[0]}&hid={x[1]}&hyadtl=1' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: med={auth}' --compressed > '/home/ubuntu/data/docs/{line_station}/{name}/doc.pdf'")
 
     # os.chdir(name)
     for image_name, image_url in images.items():
-        os.system(f"wget -o /dev/null -qO '/home/ubuntu/data/images/{line_station}/{image_name}.jpg' '{image_url}'")
+        os.system(f"wget -o /dev/null -qO '/home/ubuntu/data/images/{line_station}/{name}/{image_name}.jpg' '{image_url}'")
 
     # data[key] = item
     today_new[key] = item

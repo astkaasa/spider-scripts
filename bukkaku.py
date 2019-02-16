@@ -78,6 +78,8 @@ for index, room_id in enumerate(arr):
         name = f"bukkaku_{site}_{room_id}"
         line_station = f"{item['line']}/{item['station']}"
         # os.system(f"mkdir -p '{name}'")
+        os.system(f"mkdir -p '/home/ubuntu/data/docs/{line_station}/{name}/'")
+        os.system(f"mkdir -p '/home/ubuntu/data/images/{line_station}/{name}/'")
         os.system(f"curl 'https://{site}.bukkaku.jp/agent/room/spec_pdf/{room_id}?belt_type=manager' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: _session_id={auth}' --compressed > '/home/ubuntu/data/docs/{line_station}/{name}/doc.pdf'")
 
         proc = subprocess.Popen(f"curl 'https://{site}.bukkaku.jp/agent/room/images/{room_id}' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: _session_id={auth}' --compressed | grep 'image_files'", stdout=subprocess.PIPE, shell=True)
@@ -91,7 +93,7 @@ for index, room_id in enumerate(arr):
             image_url = re.search(r'(http|https)://[a-zA-Z0-9&;./?=_-]*original[a-zA-Z0-9&;./?=_-]*', image).group(0)
             image_name = image.split('img alt="')[1].split('" src')[0]
             item["images"][f"{image_name}_{image_index}"] = image_url
-            os.system(f"wget -o /dev/null -qO '/home/ubuntu/data/images/{line_station}/{image_name}_{image_index}.jpg' '{image_url}'")
+            os.system(f"wget -o /dev/null -qO '/home/ubuntu/data/images/{line_station}/{name}/{image_name}_{image_index}.jpg' '{image_url}'")
 
         # data[key] = item
         today_new[key] = item
