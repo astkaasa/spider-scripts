@@ -19,6 +19,6 @@ for name, alias in lines.items():
     else:
         alias.append(arr[0] + '線')
         alias.append(arr[0])
-    
+
 with open("/home/ubuntu/lines.json", "w") as f:
     json.dump(lines, f, indent=2, sort_keys=True, ensure_ascii=False)

@@ -13,6 +13,9 @@ from bs4 import BeautifulSoup
 # 813013;101927;6102
 site, username, password = sys.argv[1].split(';')
 
+with open('/home/ubuntu/data/data.json') as f:
+    data = json.load(f)
+
 today = datetime.date.today().isoformat()
 path = f"/home/ubuntu/{today}"
 os.system(f"mkdir -p {path}")
@@ -45,14 +48,15 @@ for x in range(1, pages + 1):
     for item in items:
         arr.append(re.findall(r'[0-9]+', item))
 
-data = []
+today_new = {}
+today_keys = []
 for x in arr:
     item = {}
     item["src_id"] = f"{x[0]}_{x[1]}"
     item["date"] = today
     item["site"] = f"cyber-estate_{site}"
     os.system(f"curl 'http://mediation.cyber-estate.jp/mediation/main/detail_heya.asp?ggid={site}&gid={site}&bid={x[0]}&hid={x[1]}&sbt=1&pagekb=2&pinst=1' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: med={auth}' --compressed > cyber-estate_{site}_{x[0]}_{x[1]}.log")
-    
+
     with open(f"cyber-estate_{site}_{x[0]}_{x[1]}.log") as f:
         soup = BeautifulSoup(f, 'html5lib')
 
@@ -91,17 +95,27 @@ for x in arr:
     item["images"] = images
     item["details"] = details
 
+    key = f"{item['site']}_{item['src_id']}"
+    today_keys.append(key)
+    if key in data:
+        continue
+
     name = f"cyber-estate_{site}_{x[0]}_{x[1]}"
-    os.system(f"mkdir -p '{name}'")
+    # os.system(f"mkdir -p '{name}'")
 
-    os.system(f"curl 'http://mediation.cyber-estate.jp/mediation/report/zumen_zip.asp?ggid={site}&sbt=1&gid={site}&bid={x[0]}&hid={x[1]}&hyadtl=1' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: med={auth}' --compressed > '{name}/doc.pdf'")
+    line_station = f"{item['line']}/{item['station']}"
+    os.system(f"curl 'http://mediation.cyber-estate.jp/mediation/report/zumen_zip.asp?ggid={site}&sbt=1&gid={site}&bid={x[0]}&hid={x[1]}&hyadtl=1' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3541.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: med={auth}' --compressed > '/home/ubuntu/data/docs/{line_station}/{name}/doc.pdf'")
 
-    os.chdir(name)
+    # os.chdir(name)
     for image_name, image_url in images.items():
-        os.system(f"wget -o /dev/null -qO '{image_name}.jpg' '{image_url}'")
+        os.system(f"wget -o /dev/null -qO '/home/ubuntu/data/images/{line_station}/{image_name}.jpg' '{image_url}'")
 
-    data.append(item)
-    os.chdir(path)
+    # data[key] = item
+    today_new[key] = item
+    # os.chdir(path)
 
-with open(f"/home/ubuntu/{today}/cyber-estate_{site}.json", "w") as f:
-    json.dump(data, f, indent=2, sort_keys=False, ensure_ascii=False)
+with open(f"/home/ubuntu/data/dates/{today}/cyber-estate_{site}.json", "w") as f:
+    json.dump(today_new, f, indent=2, sort_keys=False, ensure_ascii=False)
+
+with open(f"/home/ubuntu/data/keys/{today}/cyber-estate_{site}.json", "w") as f:
+    json.dump(today_keys, f, indent=2, sort_keys=False, ensure_ascii=False)

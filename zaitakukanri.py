@@ -9,6 +9,9 @@ import sys
 from bs4 import BeautifulSoup
 import itertools
 
+with open('/home/ubuntu/data/data.json') as f:
+    data = json.load(f)
+
 today = datetime.date.today().isoformat()
 path = f"/home/ubuntu/{today}"
 os.system(f"mkdir -p {path}")
@@ -19,7 +22,8 @@ os.system(f"curl 'https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Connecti
 with open(f"zaitakukanri.html") as f:
     soup = BeautifulSoup(f, 'html5lib')
 
-data = []
+today_new = {}
+today_keys = []
 for li in soup.findAll('li', {'class':'list-section'}):
     item = {}
     table = li.findAll('table')[0]
@@ -41,8 +45,6 @@ for li in soup.findAll('li', {'class':'list-section'}):
         images[f"{td.text}_{index + 1}"] = td.find('img')['data-original'].replace("74_76.jpg", "4000_4000.jpg")
 
     src_id = list(images.values())[0].split('_')[1]
-    os.system(f"mkdir -p 'zaitakukanri_{src_id}'")
-    os.system(f"curl 'https://www.zaitakukanri.co.jp/mediate/ajax/downloadzumenexecute/rentId/{src_id}/' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'DNT: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3606.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Referer: https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=mmv5s2mqcvl9hma6je3vj7hmp5; _4fb564bf9277a72b766d6f3255e0f4b0=2e60bef1a8e8d847f9c9f8689510cd54' --compressed > zaitakukanri_{src_id}/doc.jpg")
 
     if len(details['最寄り駅'].split('/')) < 2:
         continue
@@ -54,10 +56,24 @@ for li in soup.findAll('li', {'class':'list-section'}):
     item["date"] = today
     item["site"] = "zaitakukanri"
     item["images"] = images
-    data.append(item)
+
+    key = f"{item['site']}_{item['src_id']}"
+    today_keys.append(key)
+    if key in data:
+        continue
+
+    line_station = f"{item['line']}/{item['station']}"
+    # os.system(f"mkdir -p 'zaitakukanri_{src_id}'")
+    os.system(f"curl 'https://www.zaitakukanri.co.jp/mediate/ajax/downloadzumenexecute/rentId/{src_id}/' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'DNT: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3606.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Referer: https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=mmv5s2mqcvl9hma6je3vj7hmp5; _4fb564bf9277a72b766d6f3255e0f4b0=2e60bef1a8e8d847f9c9f8689510cd54' --compressed > '/home/ubuntu/data/docs/{line_station}/zaitakukanri_{src_id}/doc.jpg'")
 
     for image_name, image_url in images.items():
-        os.system(f"wget -o /dev/null --no-check-certificate -qO 'zaitakukanri_{src_id}/{image_name}.jpg' 'https://zaitakukanri.co.jp{image_url}'")
+        os.system(f"wget -o /dev/null --no-check-certificate -qO '/home/ubuntu/data/images/{line_station}/zaitakukanri_{src_id}/{image_name}.jpg' 'https://zaitakukanri.co.jp{image_url}'")
 
-with open(f"/home/ubuntu/{today}/zaitakukanri.json", "w") as f:
-    json.dump(data, f, indent=2, sort_keys=False, ensure_ascii=False)
+    # data[key] = item
+    today_new[key] = item
+
+with open(f"/home/ubuntu/data/dates/{today}/zaitakukanri.json", "w") as f:
+    json.dump(today_new, f, indent=2, sort_keys=False, ensure_ascii=False)
+
+with open(f"/home/ubuntu/data/keys/{today}/zaitakukanri.json", "w") as f:
+    json.dump(today_keys, f, indent=2, sort_keys=False, ensure_ascii=False)
