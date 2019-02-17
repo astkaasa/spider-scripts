@@ -34,9 +34,7 @@ for file_path in today_keys_list:
     all_keys += today_keys
 
 for key, value in data.items():
-    if key not in all_keys:
-        print(f"delete key: {key}")
-        print(f"delete value: {data.pop(key)}")
+    value["deleted"] = key not in all_keys
 
 with open(f"/home/ubuntu/data/data.json", "w") as f:
     json.dump(data, f, indent=2, sort_keys=False, ensure_ascii=False)
