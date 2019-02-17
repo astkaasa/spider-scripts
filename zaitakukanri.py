@@ -17,9 +17,22 @@ path = f"/home/ubuntu/{today}"
 os.system(f"mkdir -p {path}")
 os.chdir(path)
 
-os.system(f"curl 'https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3605.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=rtbr8tas9q962vpcl1em2mlsn0; _4fb564bf9277a72b766d6f3255e0f4b0=4e58b7b1e9aeae404a20aa57834d4043' --compressed > zaitakukanri.html")
+os.system(f"curl 'https://www.zaitakukanri.co.jp/' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3706.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3' -H 'Referer: https://www.zaitakukanri.co.jp/top/' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=rtbr8tas9q962vpcl1em2mlsn0' --compressed > zaitakukanri.html")
 
 with open(f"zaitakukanri.html") as f:
+    soup = BeautifulSoup(f, 'html5lib')
+
+hash = soup.find('input', {'type':'hidden'}).get('value')
+username = soup.find('input', {'type':'text'}).get('id')
+password = soup.find('input', {'type':'password'}).get('id')
+
+proc = subprocess.Popen(f"curl -c - 'https://www.zaitakukanri.co.jp/login/index/login/' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Origin: https://www.zaitakukanri.co.jp' -H 'Upgrade-Insecure-Requests: 1' -H 'DNT: 1' -H 'Content-Type: application/x-www-form-urlencoded' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3706.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3' -H 'Referer: https://www.zaitakukanri.co.jp/' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=rtbr8tas9q962vpcl1em2mlsn0' --data 'hash={hash}&{username}=3346&{password}=0033' --compressed | grep 'zaitakukanri'", stdout=subprocess.PIPE, shell=True)
+(out, err) = proc.communicate()
+auth = '='.join(out.decode('utf-8').strip().split('\t')[5:])
+
+os.system(f"curl 'https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3605.0 Safari/537.36' -H 'DNT: 1' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=rtbr8tas9q962vpcl1em2mlsn0; {auth}' --compressed > zaitakukanri_top.html")
+
+with open(f"zaitakukanri_top.html") as f:
     soup = BeautifulSoup(f, 'html5lib')
 
 today_new = {}
@@ -66,7 +79,7 @@ for li in soup.findAll('li', {'class':'list-section'}):
     # os.system(f"mkdir -p 'zaitakukanri_{src_id}'")
     os.system(f"mkdir -p '/home/ubuntu/data/docs/{line_station}/zaitakukanri_{src_id}/'")
     os.system(f"mkdir -p '/home/ubuntu/data/images/{line_station}/zaitakukanri_{src_id}/'")
-    os.system(f"curl 'https://www.zaitakukanri.co.jp/mediate/ajax/downloadzumenexecute/rentId/{src_id}/' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'DNT: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3606.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Referer: https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=mmv5s2mqcvl9hma6je3vj7hmp5; _4fb564bf9277a72b766d6f3255e0f4b0=2e60bef1a8e8d847f9c9f8689510cd54' --compressed > '/home/ubuntu/data/docs/{line_station}/zaitakukanri_{src_id}/doc.jpg'")
+    os.system(f"curl 'https://www.zaitakukanri.co.jp/mediate/ajax/downloadzumenexecute/rentId/{src_id}/' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'DNT: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3606.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Referer: https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=mmv5s2mqcvl9hma6je3vj7hmp5; {auth}' --compressed > '/home/ubuntu/data/docs/{line_station}/zaitakukanri_{src_id}/doc.jpg'")
 
     for image_name, image_url in images.items():
         os.system(f"wget -o /dev/null --no-check-certificate -qO '/home/ubuntu/data/images/{line_station}/zaitakukanri_{src_id}/{image_name}.jpg' 'https://zaitakukanri.co.jp{image_url}'")
