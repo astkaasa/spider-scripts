@@ -53,12 +53,12 @@ def zipit(folders, zip_filename):
                 zip_file.write(os.path.join(dirpath, filename), os.path.relpath(os.path.join(dirpath, filename), os.path.join(folders[0], '../..')))
     zip_file.close()
 
-docs_folders = []
-images_folders = []
+folders = []
+# images_folders = []
 for key, value in new_data.items():
     path = f"{value['room_size']}/{value['line']}/{value['station']}/{key}"
-    docs_folders.append(f"/home/ubuntu/data/docs/{path}")
-    images_folders.append(f"/home/ubuntu/data/images/{path}")
+    folders.append(f"/home/ubuntu/data/rooms/{path}")
+    # images_folders.append(f"/home/ubuntu/data/images/{path}")
 
-zipit(docs_folders, f"/home/ubuntu/data/zips/{today}_docs.zip")
-zipit(images_folders, f"/home/ubuntu/data/zips/{today}_images.zip")
+zipit(folders, f"/home/ubuntu/data/zips/{today}.zip")
+# zipit(images_folders, f"/home/ubuntu/data/zips/{today}_images.zip")

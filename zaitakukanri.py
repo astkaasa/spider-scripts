@@ -7,6 +7,7 @@ import time
 import math
 import sys
 from bs4 import BeautifulSoup
+from tabulate import tabulate
 import itertools
 
 with open('/home/ubuntu/data/data.json') as f:
@@ -80,12 +81,15 @@ for li in soup.findAll('li', {'class':'list-section'}):
 
     size_line_station = f"{room_size}/{item['line']}/{item['station']}"
     # os.system(f"mkdir -p 'zaitakukanri_{src_id}'")
-    os.system(f"mkdir -p '/home/ubuntu/data/docs/{size_line_station}/zaitakukanri_{src_id}/'")
-    os.system(f"mkdir -p '/home/ubuntu/data/images/{size_line_station}/zaitakukanri_{src_id}/'")
-    os.system(f"curl 'https://www.zaitakukanri.co.jp/mediate/ajax/downloadzumenexecute/rentId/{src_id}/' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'DNT: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3606.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Referer: https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=rtbr8tas9q962vpcl1em2mlsn0; {auth}' --compressed > '/home/ubuntu/data/docs/{size_line_station}/zaitakukanri_{src_id}/doc.jpg'")
+    os.system(f"mkdir -p '/home/ubuntu/data/rooms/{size_line_station}/zaitakukanri_{src_id}/'")
+    # os.system(f"mkdir -p '/home/ubuntu/data/images/{size_line_station}/zaitakukanri_{src_id}/'")
+    os.system(f"curl 'https://www.zaitakukanri.co.jp/mediate/ajax/downloadzumenexecute/rentId/{src_id}/' -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' -H 'Upgrade-Insecure-Requests: 1' -H 'DNT: 1' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3606.0 Safari/537.36' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' -H 'Referer: https://www.zaitakukanri.co.jp/search/?&num=2000' -H 'Accept-Encoding: gzip, deflate, br' -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7,zh-TW;q=0.6,ja;q=0.5' -H 'Cookie: PHPSESSID=rtbr8tas9q962vpcl1em2mlsn0; {auth}' --compressed > '/home/ubuntu/data/rooms/{size_line_station}/zaitakukanri_{src_id}/doc.jpg'")
 
     for image_name, image_url in images.items():
-        os.system(f"wget -o /dev/null --no-check-certificate -qO '/home/ubuntu/data/images/{size_line_station}/zaitakukanri_{src_id}/{image_name}.jpg' 'https://zaitakukanri.co.jp{image_url}'")
+        os.system(f"wget -o /dev/null --no-check-certificate -qO '/home/ubuntu/data/rooms/{size_line_station}/zaitakukanri_{src_id}/{image_name}.jpg' 'https://zaitakukanri.co.jp{image_url}'")
+
+    with open(f"/home/ubuntu/data/rooms/{size_line_station}/zaitakukanri_{src_id}/detail.txt", 'w') as f:
+        f.write(tabulate(details.items(), tablefmt="simple"))
 
     # data[key] = item
     today_new[key] = item
