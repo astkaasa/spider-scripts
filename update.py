@@ -56,7 +56,7 @@ def zipit(folders, zip_filename):
 docs_folders = []
 images_folders = []
 for key, value in new_data.items():
-    path = f"{value['line']}/{value['station']}/{key}"
+    path = f"{value['room_size']}/{value['line']}/{value['station']}/{key}"
     docs_folders.append(f"/home/ubuntu/data/docs/{path}")
     images_folders.append(f"/home/ubuntu/data/images/{path}")
 
